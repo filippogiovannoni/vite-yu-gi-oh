@@ -1,0 +1,39 @@
+:root {
+  --yugioh-primary: #C28336;
+  --yugioh-white: #ffffff;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: var(--yugioh-primary);
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+img {
+  max-width: 100%;
+}
+
+.container {
+  width: 70%;
+  max-width: 1176px;
+  margin: auto
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 -1rem;
+}
+
+[class^="col-"] {
+  padding: 1rem;
+}
+
+.d-flex {
+  display: flex;
+}
