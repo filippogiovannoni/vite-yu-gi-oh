@@ -31,9 +31,13 @@ img {
 }
 
 [class^="col-"] {
-  padding: 1rem;
+  padding: 0 1rem 1rem 1rem;
 }
 
 .d-flex {
   display: flex;
+}
+
+.col-2 {
+  width: calc(100% / 12 * 3);
 }
