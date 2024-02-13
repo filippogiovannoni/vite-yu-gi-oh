@@ -9,29 +9,35 @@ export default {
             cards: [],
             cardImage: [],
             cardImageUrl: [],
-            selectOptions: new Set([])
+            selectOptions: new Set([]),
+            loading: true
         }
     },
     mounted() {
-        axios
-            .get('https://db.ygoprodeck.com/api/v7/cardinfo.php?num=20&offset=0')
-            .then((response => {
-                console.log(response);
-                console.log(response.data);
-                console.log(response.data.data); // Card Info
 
-                this.cards = response.data.data
+        setTimeout(() => {
+            axios
+                .get('https://db.ygoprodeck.com/api/v7/cardinfo.php?num=20&offset=0')
+                .then((response => {
+                    console.log(response);
+                    console.log(response.data);
+                    console.log(response.data.data); // Card Info
 
-                this.cards.forEach(card => {
-                    this.cardImage.push(card.card_images)
-                    this.selectOptions.add(card.archetype)
-                })
+                    this.cards = response.data.data
 
-                this.cardImage.forEach(cardUrl => {
-                    this.cardImageUrl.push(cardUrl[0].image_url)
-                })
+                    this.cards.forEach(card => {
+                        this.cardImage.push(card.card_images)
+                        this.selectOptions.add(card.archetype)
+                    })
 
-            }))
+                    this.cardImage.forEach(cardUrl => {
+                        this.cardImageUrl.push(cardUrl[0].image_url)
+                    })
+                    this.loading = false
+
+                }))
+        }, 3000)
+
 
     }
 }
@@ -41,11 +47,14 @@ export default {
     <main>
 
         <div class="container">
-            <select name="type" id="type">
+            <select name="type" id="type" v-if="!loading">
                 <option v-for="option in selectOptions" value="">{{ option }}</option>
             </select>
-
-            <div class="founded">Found {{ cards.length }} cards</div>
+            <div class="founded" v-if="!loading">Found {{ cards.length }} cards</div>
+            <div class="loader" v-else>
+                Loading Cards...
+                <i class="fa-solid fa-spinner fa-spin"></i>
+            </div>
 
             <div class="cards">
                 <div class="row">
@@ -89,5 +98,16 @@ select {
     color: var(--yugioh-white);
     text-transform: uppercase;
     font-weight: bold;
+}
+
+.loader {
+    height: 90vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    & i {
+        padding: 0 0.5rem;
+    }
 }
 </style>
