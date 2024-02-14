@@ -35,10 +35,15 @@ export default {
                     })
                     this.loading = false
 
+                    console.log(this.cardsFound);
+
                 }))
         }, 3000)
-
-
+    },
+    computed: {
+        cardsFound() {
+            return this.cards.length > 0 ? 'Found ' + this.cards.length + ' cards' : 'No cards found'
+        }
     }
 }
 </script>
@@ -50,7 +55,7 @@ export default {
             <select name="type" id="type" v-if="!loading">
                 <option v-for="option in selectOptions" value="">{{ option }}</option>
             </select>
-            <div class="founded" v-if="!loading">Found {{ cards.length }} cards</div>
+            <div class="found" v-if="!loading">{{ cardsFound }}</div>
             <div class="loader" v-else>
                 Loading Cards...
                 <i class="fa-solid fa-spinner fa-spin"></i>
@@ -91,7 +96,7 @@ select {
     text-align: center
 }
 
-.founded {
+.found {
     background-color: black;
     padding: 1rem;
     margin-top: 0.5rem;
