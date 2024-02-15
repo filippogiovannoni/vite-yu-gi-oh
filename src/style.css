@@ -41,3 +41,29 @@ img {
 .col-2 {
   width: calc(100% / 12 * 3);
 }
+
+.col-12 {
+  width: 100%;
+}
+
+/* Small */
+@media screen and (min-width:568px) {
+  .col-sm-6 {
+    width: 50%;
+  }
+}
+
+/* Medium */
+@media screen and (min-width:768px) {
+  .col-md-4 {
+    width: calc(100% / 12 * 4);
+  }
+}
+
+/* Large */
+@media screen and (min-width:1024px) {
+
+  .col-lg-3 {
+    width: calc(100% / 12 * 3);
+  }
+}

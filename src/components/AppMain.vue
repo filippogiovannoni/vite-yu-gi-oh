@@ -9,7 +9,6 @@ export default {
             cards: [],
             cardImage: [],
             cardImageUrl: [],
-            selectOptions: new Set([]),
             loading: true
         }
     },
@@ -17,7 +16,7 @@ export default {
 
         setTimeout(() => {
             axios
-                .get('https://db.ygoprodeck.com/api/v7/cardinfo.php?num=20&offset=0')
+                .get('https://db.ygoprodeck.com/api/v7/cardinfo.php?num=30&offset=0')
                 .then((response => {
                     console.log(response);
                     console.log(response.data);
@@ -27,7 +26,6 @@ export default {
 
                     this.cards.forEach(card => {
                         this.cardImage.push(card.card_images)
-                        this.selectOptions.add(card.archetype)
                     })
 
                     this.cardImage.forEach(cardUrl => {
@@ -38,7 +36,7 @@ export default {
                     console.log(this.cardsFound);
 
                 }))
-        }, 3000)
+        }, 1000)
     },
     computed: {
         cardsFound() {
@@ -52,9 +50,21 @@ export default {
     <main>
 
         <div class="container">
-            <select name="type" id="type" v-if="!loading">
-                <option v-for="option in selectOptions" value="">{{ option }}</option>
-            </select>
+            <div class="filters" v-if="!loading">
+                <select name="type" id="type">
+                    <option value="All" selected>All</option>
+                    <option value="Alien">Alien</option>
+                    <option value="Infernoble Arms">Infernoble Arms</option>
+                    <option value="Noble Knight">Noble Knight</option>
+                    <option value="Melodious">Melodious</option>
+                    <option value="Archfiend">Archfiend</option>
+                    <option value="Elemental HERO">Elemental HERO</option>
+                    <option value="Umi">Umi</option>
+                    <option value="ABC">ABC</option>
+                </select>
+                <input type="text" name="searchBox" id="searchBox" placeholder="Enter card name">
+                <button>Search</button>
+            </div>
             <div class="found" v-if="!loading">{{ cardsFound }}</div>
             <div class="loader" v-else>
                 Loading Cards...
@@ -63,7 +73,7 @@ export default {
 
             <div class="cards">
                 <div class="row">
-                    <div class="col-2" v-for="(card, index) in cards">
+                    <div class="col-12 col-sm-6 col-md-4 col-lg-3" v-for="(card, index) in cards">
                         <div class="card">
                             <img :src="cardImageUrl[index]" alt="">
                             <div class="name">{{ card.name }}</div>
@@ -79,9 +89,19 @@ export default {
 
 
 <style scoped>
-select {
+.filters {
     margin: 2rem 0;
-    padding: 0.5rem;
+    display: flex;
+    gap: 1rem;
+
+    & select,
+    input,
+    button {
+        padding: 0.5rem;
+        border-radius: 0.5rem;
+        border-style: none;
+        filter: drop-shadow(0 0 5px black);
+    }
 }
 
 .name {
@@ -114,5 +134,10 @@ select {
     & i {
         padding: 0 0.5rem;
     }
+}
+
+.card:hover {
+    scale: 1.05;
+    transition: all 1s;
 }
 </style>
