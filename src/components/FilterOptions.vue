@@ -1,11 +1,19 @@
 <script>
+
+import { store } from '../store.js'
+
 export default {
-    name: 'FilterOptions'
+    name: 'FilterOptions',
+    data() {
+        return {
+            store
+        }
+    }
 }
 </script>
 
 <template>
-    <div class="filters" v-if="!loading">
+    <div class="filters" v-if="!store.loading">
         <select name="type" id="type">
             <option value="All" selected>All</option>
             <option value="Alien">Alien</option>
