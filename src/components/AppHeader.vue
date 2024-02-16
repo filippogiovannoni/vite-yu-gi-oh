@@ -19,6 +19,14 @@ export default {
 
 
 <style scoped>
+header {
+    filter: drop-shadow(0 0 10px black);
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 10;
+}
+
 nav {
     background-color: var(--yugioh-white);
     align-items: center;
