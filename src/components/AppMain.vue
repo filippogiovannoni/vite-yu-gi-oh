@@ -1,6 +1,7 @@
 <script>
 
 import axios from 'axios'
+import LoaderIcon from './LoaderIcon.vue'
 
 export default {
     name: 'AppMain',
@@ -9,40 +10,39 @@ export default {
             cards: [],
             cardImage: [],
             cardImageUrl: [],
-            loading: true
-        }
+            loading: true,
+            base_api_url: 'https://db.ygoprodeck.com/api/v7/cardinfo.php?num=30&offset=0'
+        };
     },
     mounted() {
-
-        setTimeout(() => {
+        this.getCards();
+    },
+    computed: {
+        cardsFound() {
+            return this.cards.length > 0 ? 'Found ' + this.cards.length + ' cards' : 'No cards found';
+        }
+    },
+    methods: {
+        getCards() {
             axios
-                .get('https://db.ygoprodeck.com/api/v7/cardinfo.php?num=30&offset=0')
+                .get(this.base_api_url)
                 .then((response => {
                     console.log(response);
                     console.log(response.data);
                     console.log(response.data.data); // Card Info
-
-                    this.cards = response.data.data
-
+                    this.cards = response.data.data;
                     this.cards.forEach(card => {
-                        this.cardImage.push(card.card_images)
-                    })
-
+                        this.cardImage.push(card.card_images);
+                    });
                     this.cardImage.forEach(cardUrl => {
-                        this.cardImageUrl.push(cardUrl[0].image_url)
-                    })
-                    this.loading = false
-
+                        this.cardImageUrl.push(cardUrl[0].image_url);
+                    });
+                    this.loading = false;
                     console.log(this.cardsFound);
-
-                }))
-        }, 1000)
-    },
-    computed: {
-        cardsFound() {
-            return this.cards.length > 0 ? 'Found ' + this.cards.length + ' cards' : 'No cards found'
+                }));
         }
-    }
+    },
+    components: { LoaderIcon }
 }
 </script>
 
@@ -66,10 +66,7 @@ export default {
                 <button>Search</button>
             </div>
             <div class="found" v-if="!loading">{{ cardsFound }}</div>
-            <div class="loader" v-else>
-                Loading Cards...
-                <i class="fa-solid fa-spinner fa-spin"></i>
-            </div>
+            <LoaderIcon v-else></LoaderIcon>
 
             <div class="cards">
                 <div class="row">
@@ -89,6 +86,12 @@ export default {
 
 
 <style scoped>
+main {
+    position: relative;
+    z-index: 0;
+    padding-top: 3rem;
+}
+
 .filters {
     margin: 2rem 0;
     display: flex;
@@ -123,17 +126,6 @@ export default {
     color: var(--yugioh-white);
     text-transform: uppercase;
     font-weight: bold;
-}
-
-.loader {
-    height: 90vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    & i {
-        padding: 0 0.5rem;
-    }
 }
 
 .card:hover {
